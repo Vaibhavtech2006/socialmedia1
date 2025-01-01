@@ -1,21 +1,26 @@
-// Post.jsx
-import React, { useContext } from "react";
-import { MdDelete } from "react-icons/md";
+import { useContext } from "react";
+import { AiFillDelete } from "react-icons/ai";
 import { PostList } from "../store/post-list-store";
 
 const Post = ({ post }) => {
   const { deletePost } = useContext(PostList);
 
+  // Destructure reactions if it's an object, or handle it as a number
+  const reactionsText =
+    typeof post.reactions === "object"
+      ? `This post has ${post.reactions.likes} likes and ${post.reactions.dislikes} dislikes.`
+      : `This post has been reacted by ${post.reactions} people.`;
+
   return (
-    <div className="card post-card" >
+    <div className="card post-card" style={{ width: "30rem" }}>
       <div className="card-body">
         <h5 className="card-title">
           {post.title}
           <span
-            className=" btn position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+            className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
             onClick={() => deletePost(post.id)}
           >
-            <MdDelete />
+            <AiFillDelete />
           </span>
         </h5>
         <p className="card-text">{post.body}</p>
@@ -25,7 +30,7 @@ const Post = ({ post }) => {
           </span>
         ))}
         <div className="alert alert-success reactions" role="alert">
-          This post has been reacted by {post.reactions} people.
+          {reactionsText}
         </div>
       </div>
     </div>
